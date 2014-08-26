@@ -48,7 +48,7 @@ def rest(method, path, query_params=None, data=None):
     except ValueError as exc:
         raise APIError(exc, resp.content, resp.status_code)
 
-    if resp.status_code == 200:
+    if resp.status_code in (200, 201):
         return json_resp
 
     error_msg = json_resp.get('message') or json_resp.get('error')
