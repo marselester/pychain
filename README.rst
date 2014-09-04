@@ -17,4 +17,31 @@ Usage example:
     except chain.ChainException as exc:
         print exc
 
+Webhook
+-------
+
+Creating a webhook
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    webhook = chain.Webhook.create('https://your-server-url.com')
+
+Updating a webhook
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    webhook = chain.Webhook('FFA21991-5669-4728-8C83-74DEC4C93A4A')
+    webhook.url = 'https://your-new-url.com'
+    webhook.save()
+
+Deleting a webhook
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    webhook = chain.Webhook('FFA21991-5669-4728-8C83-74DEC4C93A4A')
+    webhook.delete()
+
 .. _Chain.com: https://chain.com
