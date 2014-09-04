@@ -18,7 +18,19 @@ from .exceptions import (
 
 
 class Webhook(object):
-    _api_path = 'webhooks'
+    _api_path_collection = 'webhooks'
+    _api_path_single = 'webhooks/{webhook_id}'
+
+    def __init__(self, id_):
+        self.id_ = id_
+        self.url = None
+
+    def save(self):
+        data = {
+            'url': self.url
+        }
+        path = self._api_path_single.format(webhook_id=self.id_)
+        return rest('put', path, data=data)
 
     @classmethod
     def create(cls, url, id_=None):
@@ -27,11 +39,11 @@ class Webhook(object):
         }
         if id_ is not None:
             data['id'] = id_
-        return rest('post', cls._api_path, data=data)
+        return rest('post', cls._api_path_collection, data=data)
 
 
 class WebhookEvent(object):
-    _api_path = 'webhooks/{webhook_id}/events'
+    _api_path_collection = 'webhooks/{webhook_id}/events'
 
     @classmethod
     def create(cls, webhook_id, event, block_chain, address, confirmations=None):
@@ -43,5 +55,5 @@ class WebhookEvent(object):
         }
         if confirmations is not None:
             data['confirmations'] = confirmations
-        path = cls._api_path.format(webhook_id=webhook_id)
+        path = cls._api_path_collection.format(webhook_id=webhook_id)
         return rest('post', path, data=data)
