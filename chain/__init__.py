@@ -46,12 +46,6 @@ class Webhook(object):
         return webhook
 
     @classmethod
-    def retrieve(cls, id_):
-        path = cls._api_path_single.format(webhook_id=id_)
-        json_resp = rest('get', path)
-        return cls.construct_from(json_resp)
-
-    @classmethod
     def list(cls):
         json_resp = rest('get', cls._api_path_collection)
         for attributes in json_resp:

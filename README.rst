@@ -34,13 +34,6 @@ Retrieving a list of webhooks
 
     webhook_list = chain.Webhook.list()
 
-Retrieving a webhook
-~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: python
-
-    webhook = chain.Webhook.retrieve('FFA21991-5669-4728-8C83-74DEC4C93A4A')
-
 Updating a webhook
 ~~~~~~~~~~~~~~~~~~
 
