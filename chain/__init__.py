@@ -37,13 +37,26 @@ class Webhook(object):
         return rest('delete', path)
 
     @classmethod
+    def construct_from(cls, attributes):
+        webhook = cls(id_=attributes.get('id'))
+        webhook.url = attributes.get('url')
+        return webhook
+
+    @classmethod
+    def retrieve(cls, id_):
+        path = cls._api_path_single.format(webhook_id=id_)
+        json_resp = rest('get', path)
+        return cls.construct_from(json_resp)
+
+    @classmethod
     def create(cls, url, id_=None):
         data = {
             'url': url
         }
         if id_ is not None:
             data['id'] = id_
-        return rest('post', cls._api_path_collection, data=data)
+        json_resp = rest('post', cls._api_path_collection, data=data)
+        return cls.construct_from(json_resp)
 
 
 class WebhookEvent(object):
