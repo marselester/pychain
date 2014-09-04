@@ -27,6 +27,13 @@ Creating a webhook
 
     webhook = chain.Webhook.create('https://your-server-url.com')
 
+Retrieving a list of webhooks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    webhook_list = chain.Webhook.list()
+
 Retrieving a webhook
 ~~~~~~~~~~~~~~~~~~~~
 

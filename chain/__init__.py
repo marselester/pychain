@@ -52,6 +52,12 @@ class Webhook(object):
         return cls.construct_from(json_resp)
 
     @classmethod
+    def list(cls):
+        json_resp = rest('get', cls._api_path_collection)
+        for attributes in json_resp:
+            yield cls.construct_from(attributes)
+
+    @classmethod
     def create(cls, url, id_=None):
         data = {
             'url': url
