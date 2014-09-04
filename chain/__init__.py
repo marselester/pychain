@@ -32,6 +32,10 @@ class Webhook(object):
         path = self._api_path_single.format(webhook_id=self.id_)
         return rest('put', path, data=data)
 
+    def delete(self):
+        path = self._api_path_single.format(webhook_id=self.id_)
+        return rest('delete', path)
+
     @classmethod
     def create(cls, url, id_=None):
         data = {
