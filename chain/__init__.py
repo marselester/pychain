@@ -25,6 +25,9 @@ class Webhook(object):
         self.id_ = id_
         self.url = None
 
+    def __repr__(self):
+        return '<chain.Webhook {}>'.format(self.id_)
+
     def save(self):
         data = {
             'url': self.url
