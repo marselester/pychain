@@ -21,23 +21,27 @@ class Webhook(object):
     _api_path_collection = 'webhooks'
     _api_path_single = 'webhooks/{webhook_id}'
 
-    def __init__(self, id_):
-        self.id_ = id_
+    def __init__(self, id):
+        self._id = id
         self.url = None
 
     def __repr__(self):
-        return '<chain.Webhook {}>'.format(self.id_)
+        return '<chain.Webhook {}>'.format(self.id)
+
+    @property
+    def id(self):
+        return self._id
 
     def save(self):
         data = {
             'url': self.url
         }
-        path = self._api_path_single.format(webhook_id=self.id_)
+        path = self._api_path_single.format(webhook_id=self.id)
         json_resp = rest('put', path, data=data)
         self.refresh_from(self, json_resp)
 
     def delete(self):
-        path = self._api_path_single.format(webhook_id=self.id_)
+        path = self._api_path_single.format(webhook_id=self.id)
         return rest('delete', path)
 
     @staticmethod
@@ -46,7 +50,7 @@ class Webhook(object):
 
     @classmethod
     def construct_from(cls, attributes):
-        webhook = cls(id_=attributes.get('id'))
+        webhook = cls(id=attributes.get('id'))
         cls.refresh_from(webhook, attributes)
         return webhook
 
@@ -57,12 +61,12 @@ class Webhook(object):
             yield cls.construct_from(attributes)
 
     @classmethod
-    def create(cls, url, id_=None):
+    def create(cls, url, id=None):
         data = {
             'url': url
         }
-        if id_ is not None:
-            data['id'] = id_
+        if id is not None:
+            data['id'] = id
         json_resp = rest('post', cls._api_path_collection, data=data)
         return cls.construct_from(json_resp)
 
