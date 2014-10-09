@@ -38,20 +38,24 @@ class Webhook(object):
         }
         path = self._api_path_single.format(webhook_id=self.id)
         json_resp = rest('put', path, data=data)
-        self.refresh_from(self, json_resp)
+        self.refresh_from(json_resp)
 
     def delete(self):
         path = self._api_path_single.format(webhook_id=self.id)
         return rest('delete', path)
 
-    @staticmethod
-    def refresh_from(webhook, attributes):
-        webhook.url = attributes.get('url')
+    def refresh_from(self, attributes):
+        self.url = attributes.get('url')
+
+    def refresh(self):
+        path = self._api_path_single.format(webhook_id=self.id)
+        json_resp = rest('get', path)
+        self.refresh_from(json_resp)
 
     @classmethod
     def construct_from(cls, attributes):
         webhook = cls(id=attributes.get('id'))
-        cls.refresh_from(webhook, attributes)
+        webhook.refresh_from(attributes)
         return webhook
 
     @classmethod
