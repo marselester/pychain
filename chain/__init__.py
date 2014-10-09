@@ -78,6 +78,51 @@ class Webhook(object):
 class WebhookEvent(object):
     _api_path_collection = 'webhooks/{webhook_id}/events'
 
+    def __init__(self, id):
+        self._id = id
+        self._webhook_id = None
+        self._event = None
+        self._block_chain = None
+        self._address = None
+        self._confirmations = None
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def webhook_id(self):
+        return self._webhook_id
+
+    @property
+    def event(self):
+        return self._event
+
+    @property
+    def block_chain(self):
+        return self._block_chain
+
+    @property
+    def address(self):
+        return self._address
+
+    @property
+    def confirmations(self):
+        return self._confirmations
+
+    def refresh_from(self, attributes):
+        self._webhook_id = attributes.get('webhook_id')
+        self._event = attributes.get('event')
+        self._block_chain = attributes.get('block_chain')
+        self._address = attributes.get('address')
+        self._confirmations = attributes.get('confirmations')
+
+    @classmethod
+    def construct_from(cls, attributes):
+        webhook_event = cls(id=attributes.get('id'))
+        webhook_event.refresh_from(attributes)
+        return webhook_event
+
     @classmethod
     def create(cls, webhook_id, event, block_chain, address, confirmations=None):
         data = {
@@ -89,4 +134,5 @@ class WebhookEvent(object):
         if confirmations is not None:
             data['confirmations'] = confirmations
         path = cls._api_path_collection.format(webhook_id=webhook_id)
-        return rest('post', path, data=data)
+        json_resp = rest('post', path, data=data)
+        return cls.construct_from(json_resp)
